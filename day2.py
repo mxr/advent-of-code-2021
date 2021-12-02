@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 from typing import Generator
 from typing import NamedTuple
 
-DIRECTIONS = "forward"
+DIRECTION_FORWARD = "forward"
 DIRECTION_DOWN = "down"
 DIRECTION_UP = "up"
 
