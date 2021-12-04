@@ -5,6 +5,7 @@ from itertools import zip_longest
 from typing import Dict
 from typing import Iterable
 from typing import List
+from typing import NamedTuple
 from typing import Tuple
 from typing import TypeVar
 
@@ -25,12 +26,18 @@ class Cell:
         self.marked = True
 
 
+class CellWithLoc(NamedTuple):
+    row: int
+    col: int
+    cell: Cell
+
+
 class Board:
     def __init__(self, grid: List[List[Cell]]) -> None:
-        self._nums: Dict[int, Tuple[int, int, Cell]] = {}
+        self._cell_index: Dict[int, CellWithLoc] = {}
         for i, row in enumerate(grid):
             for j, cell in enumerate(row):
-                self._nums[cell.value] = (i, j, cell)
+                self._cell_index[cell.value] = CellWithLoc(i, j, cell)
 
         self.grid = grid
         self._last_marked = (-1, -1)
@@ -40,13 +47,12 @@ class Board:
         if self._won:
             return False
 
-        metadata = self._nums.get(value)
-        if not metadata:
+        cwl = self._cell_index.get(value)
+        if not cwl:
             return False
 
-        i, j, cell = metadata
-        cell.mark()
-        self._last_marked = (i, j)
+        cwl.cell.mark()
+        self._last_marked = (cwl.row, cwl.col)
         return True
 
     def score(self, last_called: int) -> int:
@@ -60,12 +66,12 @@ class Board:
 
     def won(self) -> bool:
         if not self._won:
-            i, j = self._last_marked
+            row, col = self._last_marked
 
             # fmt: off
             self._won = (
-                all(c.marked for c in self.grid[i]) or
-                all(r[j].marked for r in self.grid)
+                all(c.marked for c in self.grid[row]) or
+                all(r[col].marked for r in self.grid)
             )
             # fmt: on
 
@@ -98,13 +104,16 @@ def part1(filename: str) -> int:
 
 def part2(filename: str) -> int:
     drawing, boards = parse(filename)
-    last_board_score = -1
+
+    boards_left = len(boards)
     for num in drawing:
         for board in boards:
             if board.maybe_mark(num) and board.won():
-                last_board_score = board.score(num)
+                boards_left -= 1
+                if not boards_left:
+                    return board.score(num)
 
-    return last_board_score
+    return -1
 
 
 def main() -> int:
