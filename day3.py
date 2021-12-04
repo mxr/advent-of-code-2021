@@ -21,9 +21,9 @@ def part1(filename: str) -> int:
     gamma_str = "".join("1" if b > 0 else "0" for b in gamma_counter)
     gamma = int(gamma_str, 2)
 
-    sigma = ~gamma & int("1" * len(first), 2)
+    epsilon = ~gamma & int("1" * len(first), 2)
 
-    return gamma * sigma
+    return gamma * epsilon
 
 
 def part2(filename: str) -> int:
