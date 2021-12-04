@@ -3,11 +3,15 @@ from argparse import ArgumentParser
 from dataclasses import dataclass
 from itertools import zip_longest
 from typing import Dict
+from typing import Iterable
 from typing import List
 from typing import Tuple
+from typing import TypeVar
+
+T = TypeVar("T")
 
 
-def grouper(iterable, n):
+def grouper(iterable: Iterable[T], n: int) -> Iterable[Tuple[T, ...]]:
     args = [iter(iterable)] * n
     return zip_longest(*args)
 
