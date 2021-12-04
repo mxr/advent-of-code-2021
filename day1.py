@@ -36,7 +36,7 @@ def part2(filename: str) -> int:
 
 def main() -> int:
     parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=1)
+    parser.add_argument("-p", "--part", type=int, default=0)
     parser.add_argument("-f", "--filename", type=str, required=True)
 
     args = parser.parse_args()
@@ -44,9 +44,10 @@ def main() -> int:
     part: int = args.part
     filename: str = args.filename
 
-    func = part1 if part == 1 else part2
-
-    print(func(filename))
+    if (part or 1) == 1:
+        print(f"part1: {part1(filename)}")
+    if (part or 2) == 2:
+        print(f"part2: {part2(filename)}")
 
     return 0
 
