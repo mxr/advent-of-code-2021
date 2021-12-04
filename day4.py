@@ -37,6 +37,9 @@ class Board:
         self._won = False
 
     def maybe_mark(self, value: int) -> bool:
+        if self._won:
+            return False
+
         metadata = self._nums.get(value)
         if not metadata:
             return False
@@ -56,17 +59,16 @@ class Board:
         return last_called * unmarked_sum
 
     def won(self) -> bool:
-        if self._won:
-            return True
+        if not self._won:
+            i, j = self._last_marked
 
-        i, j = self._last_marked
+            # fmt: off
+            self._won = (
+                all(c.marked for c in self.grid[i]) or
+                all(r[j].marked for r in self.grid)
+            )
+            # fmt: on
 
-        # fmt: off
-        self._won = (
-            all(c.marked for c in self.grid[i]) or
-            all(r[j].marked for r in self.grid)
-        )
-        # fmt: on
         return self._won
 
 
@@ -78,9 +80,8 @@ def parse(filename: str) -> Tuple[List[int], List[Board]]:
         for group in grouper(f, 6):
             _, *lines = group
             grid = [[Cell(int(n)) for n in line.split()] for line in lines]
-            board = Board(grid)
 
-            boards.append(board)
+            boards.append(Board(grid))
 
     return drawing, boards
 
@@ -100,7 +101,7 @@ def part2(filename: str) -> int:
     last_board_score = -1
     for num in drawing:
         for board in boards:
-            if not board.won() and board.maybe_mark(num) and board.won():
+            if board.maybe_mark(num) and board.won():
                 last_board_score = board.score(num)
 
     return last_board_score
@@ -108,7 +109,7 @@ def part2(filename: str) -> int:
 
 def main() -> int:
     parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=1)
+    parser.add_argument("-p", "--part", type=int, default=0)
     parser.add_argument("-f", "--filename", type=str, required=True)
 
     args = parser.parse_args()
@@ -116,9 +117,10 @@ def main() -> int:
     part: int = args.part
     filename: str = args.filename
 
-    func = part1 if part == 1 else part2
-
-    print(func(filename))
+    if (part or 1) == 1:
+        print(f"part1: {part1(filename)}")
+    if (part or 2) == 2:
+        print(f"part2: {part2(filename)}")
 
     return 0
 
