@@ -56,11 +56,7 @@ class Board:
         return True
 
     def score(self, last_called: int) -> int:
-        # fmt: off
-        unmarked_sum = sum(
-            c.value for r in self.grid for c in r if not c.marked
-        )
-        # fmt: on
+        unmarked_sum = sum(c.value for r in self.grid for c in r if not c.marked)
 
         return last_called * unmarked_sum
 
