@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from argparse import ArgumentParser
 from collections import Counter
-from typing import Counter as CounterType
 from typing import List
 
 
@@ -12,12 +11,10 @@ def parse(filename: str) -> List[int]:
 
 def execute(filename: str, days: int) -> int:
     fish = parse(filename)
-    ages: CounterType[int] = Counter()
-    for f in fish:
-        ages[f] += 1
+    ages = Counter(fish)
 
     for _ in range(days):
-        new_ages: CounterType[int] = Counter()
+        new_ages: Counter[int] = Counter()
         for age, count in ages.items():
             if age == 0:
                 new_ages[6] += count
