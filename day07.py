@@ -19,11 +19,17 @@ def part2(filename: str) -> int:
 
 def execute(filename: str, fuel_func: Callable[[int, int], int]) -> int:
     crabs = parse(filename)
-    m = sum(fuel_func(c, 0) for c in crabs)
-    for i in range(1, len(crabs)):
-        m = min(m, sum(fuel_func(c, i) for c in crabs))
+    min_fuel = sum(fuel_func(c, 0) for c in crabs)
+    for i in range(1, max(crabs)):
+        m = 0
+        for c in crabs:
+            m += fuel_func(c, i)
+            if m > min_fuel:
+                break
+        else:
+            min_fuel = m
 
-    return m
+    return min_fuel
 
 
 def fuel_part1(crab: int, i: int) -> int:
