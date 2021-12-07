@@ -14,7 +14,7 @@ def execute(filename: str, days: int) -> int:
     ages = Counter(fish)
 
     for _ in range(days):
-        new_ages: Counter[int] = Counter()
+        new_ages: "Counter[int]" = Counter()
         for age, count in ages.items():
             if age == 0:
                 new_ages[6] += count
