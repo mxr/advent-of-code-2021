@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from argparse import ArgumentParser
 from collections import Counter
+from typing import Counter as CounterType
 from typing import List
 
 
@@ -14,7 +15,7 @@ def execute(filename: str, days: int) -> int:
     ages = Counter(fish)
 
     for _ in range(days):
-        new_ages: "Counter[int]" = Counter()
+        new_ages: CounterType[int] = Counter()
         for age, count in ages.items():
             if age == 0:
                 new_ages[6] += count
