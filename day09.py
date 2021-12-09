@@ -32,24 +32,22 @@ def parse(filename: str) -> Map:
 def part1(filename: str) -> int:
     m = parse(filename)
 
-    risk = 0
-    for i, row in enumerate(m.grid):
-        for j, p in enumerate(row):
-            if all(p < n for n, _, _ in m.neighbors[i, j]):
-                risk += p + 1
+    return sum(p + 1 for p, _, _ in low_points(m))
 
-    return risk
+
+def low_points(m: Map) -> Generator[Tuple[int, int, int], None, None]:
+    return (
+        (p, i, j)
+        for i, row in enumerate(m.grid)
+        for j, p in enumerate(row)
+        if all(p < n for n, _, _ in m.neighbors[i, j])
+    )
 
 
 def part2(filename: str) -> int:
     m = parse(filename)
 
-    low_points = [
-        (i, j)
-        for i, row in enumerate(m.grid)
-        for j, p in enumerate(row)
-        if all(p < n for n, _, _ in m.neighbors[i, j])
-    ]
+    low_coords = [(i, j) for _, i, j in low_points(m)]
 
     seen = set()
 
@@ -69,11 +67,10 @@ def part2(filename: str) -> int:
 
         return b
 
-    basins = [basin(i, j) for i, j in low_points]
-    top3 = sorted(basins, reverse=True)[:3]
+    basins = [basin(i, j) for i, j in low_coords]
 
     prod = 1
-    for b in top3:
+    for b in sorted(basins, reverse=True)[:3]:
         prod *= b
 
     return prod
