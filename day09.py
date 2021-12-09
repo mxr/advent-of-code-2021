@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import functools
 from argparse import ArgumentParser
 from typing import Generator
 from typing import List
@@ -9,7 +8,6 @@ from typing import Tuple
 class Map:
     def __init__(self, grid: List[List[int]]) -> None:
         self.grid = grid
-        self.width, self.height = len(self.grid[0]), len(self.grid)
 
         # memoize neighbors
         def neighbors(i: int, j: int) -> Generator[Tuple[int, int, int], None, None]:
@@ -21,8 +19,8 @@ class Map:
 
         self.neighbors = {
             (i, j): list(neighbors(i, j))
-            for i in range(len(self.grid))
-            for j in range(len(self.grid[0]))
+            for i, row in enumerate(grid)
+            for j, _ in enumerate(row)
         }
 
 
@@ -55,7 +53,6 @@ def part2(filename: str) -> int:
 
     seen = set()
 
-    @functools.lru_cache(m.width * m.height)
     def basin(i: int, j: int) -> int:
         if (i, j) in seen:
             return 0
