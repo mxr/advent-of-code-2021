@@ -2,7 +2,6 @@
 from argparse import ArgumentParser
 from collections import Counter
 from itertools import tee
-from typing import Counter as CounterType
 from typing import Dict
 from typing import Tuple
 
@@ -30,27 +29,23 @@ def part2(filename: str) -> int:
 def execute(filename: str, n: int) -> int:
     start, rules = parse(filename)
 
+    c = Counter(start)
+
     s1, s2 = tee(start)
     next(s2)
     buckets = Counter(zip(s1, s2))
-
     for _ in range(n):
         for b, v in tuple(buckets.items()):  # avoid mutating while iterating
             (c1, c2), c3 = b, rules[b]
 
+            c[c3] += v
+
             buckets[(c1, c3)] += v
             buckets[(c3, c2)] += v
             buckets[b] -= v
-            if buckets[b] == 0:
-                buckets.pop(b)
-
-    c: CounterType[str] = Counter()
-    for (_, c2), v in buckets.items():
-        c[c2] += v
 
     mc = c.most_common()
 
-    # note - will be off by 1 or 2
     return mc[0][1] - mc[-1][1]
 
 
