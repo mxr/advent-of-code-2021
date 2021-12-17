@@ -40,8 +40,8 @@ def execute(filename: str, n: int) -> int:
 
             c[c3] += v
 
-            buckets[(c1, c3)] += v
-            buckets[(c3, c2)] += v
+            buckets[c1, c3] += v
+            buckets[c3, c2] += v
             buckets[b] -= v
 
     mc = c.most_common()
