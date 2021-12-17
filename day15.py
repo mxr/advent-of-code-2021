@@ -44,6 +44,7 @@ class Map:
         min_dists = {k: sys.maxsize for k in graph}
         min_dists[0, 0] = 0
 
+        # TODO - very slow :)
         q = set(graph)
         while q:
             closest = min(q, key=lambda ij: min_dists[ij])
