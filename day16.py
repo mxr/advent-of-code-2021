@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from argparse import ArgumentParser
-from typing import List
+from typing import Iterable
 from typing import NamedTuple
 from typing import Tuple
 
@@ -14,58 +14,57 @@ def part1(filename: str) -> int:
     data = parse(filename)
     packet = format(int(data, 16), "b").zfill(len(data * 4))
 
-    out = parse_packet(packet)
+    p, _ = parse_packet(packet)
 
-    return out.version
+    return p.version
 
 
 def part2(filename: str) -> int:
     data = parse(filename)
     packet = format(int(data, 16), "b").zfill(len(data * 4))
 
-    out = parse_packet(packet)
+    p, _ = parse_packet(packet)
 
-    return out.value
+    return p.value
 
 
-class Out(NamedTuple):
+class Packet(NamedTuple):
     version: int
     value: int
-    i: int
 
 
-def parse_packet(packet: str) -> Out:
+def parse_packet(packet: str) -> Tuple[Packet, int]:
     version, type_id = int(packet[:3], 2), int(packet[3 : 3 + 3], 2)
 
     if type_id == 4:
         n, di = parse_literal(packet[6:])
-        return Out(version, n, di + 6)
+        return Packet(version, n), di + 6
+
+    ps = []
+    lt_id = packet[6]
+    offset = 7 + (15 if lt_id == "0" else 11)
+
+    if lt_id == "0":
+        i, t = 0, int(packet[7:offset], 2)
+        while i < t:
+            p, di = parse_packet(packet[i + offset :])
+
+            ps.append(p)
+            i += di
+
     else:
-        lt_id = packet[6]
-        if lt_id == "0":
-            i, t = 0, int(packet[7 : 7 + 15], 2)
-            outs = []
-            while i < t:
-                out = parse_packet(packet[i + 7 + 15 :])
-                outs.append(out)
+        i, n = 0, int(packet[7:offset], 2)
+        for _ in range(n):
+            p, di = parse_packet(packet[i + offset :])
 
-                version += out.version
-                i += out.i
+            ps.append(p)
+            i += di
 
-            return Out(version, value(type_id, [o.value for o in outs]), i + 6 + 1 + 15)
+    version += sum(p.version for p in ps)
+    val = value(type_id, (p.value for p in ps))
+    i += offset
 
-        else:
-            i, c, n = 0, 0, int(packet[7 : 7 + 11], 2)
-            outs = []
-            while c < n:
-                out = parse_packet(packet[i + 7 + 11 :])
-                outs.append(out)
-
-                version += out.version
-                i += out.i
-                c += 1
-
-            return Out(version, value(type_id, [o.value for o in outs]), i + 6 + 1 + 11)
+    return Packet(version, val), i
 
 
 def parse_literal(packet: str) -> Tuple[int, int]:
@@ -82,7 +81,7 @@ def parse_literal(packet: str) -> Tuple[int, int]:
     return n, i
 
 
-def value(type_id: int, values: List[int]) -> int:
+def value(type_id: int, values: Iterable[int]) -> int:
     if type_id == 0:
         return sum(values)
     elif type_id == 1:
@@ -94,13 +93,15 @@ def value(type_id: int, values: List[int]) -> int:
         return min(values)
     elif type_id == 3:
         return max(values)
-    elif type_id == 5:
-        return int(values[0] > values[1])
+
+    v1, v2 = values
+    if type_id == 5:
+        return v1 > v2
     elif type_id == 6:
-        return int(values[0] < values[1])
+        return v1 < v2
     else:
         assert type_id == 7
-        return int(values[0] == values[1])
+        return v1 == v2
 
 
 def main() -> int:
