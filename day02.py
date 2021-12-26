@@ -3,10 +3,6 @@ from argparse import ArgumentParser
 from typing import Generator
 from typing import NamedTuple
 
-DIRECTION_FORWARD = "forward"
-DIRECTION_DOWN = "down"
-DIRECTION_UP = "up"
-
 
 class Vector(NamedTuple):
     direction: str
@@ -24,9 +20,9 @@ def part1(filename: str) -> int:
     hor, ver = 0, 0
 
     for v in parse(filename):
-        if v.direction == DIRECTION_FORWARD:
+        if v.direction == "forward":
             hor += v.value
-        elif v.direction == DIRECTION_DOWN:
+        elif v.direction == "down":
             ver += v.value
         else:
             ver -= v.value
@@ -38,10 +34,10 @@ def part2(filename: str) -> int:
     hor, ver, aim = 0, 0, 0
 
     for v in parse(filename):
-        if v.direction == DIRECTION_FORWARD:
+        if v.direction == "forward":
             hor += v.value
             ver += aim * v.value
-        elif v.direction == DIRECTION_DOWN:
+        elif v.direction == "down":
             aim += v.value
         else:
             aim -= v.value
