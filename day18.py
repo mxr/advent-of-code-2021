@@ -82,11 +82,10 @@ def can_explode(sn: str) -> Tuple[bool, int, int, int, int]:
             b += 1
         elif c == "]":
             b -= 1
-        elif "0" <= c <= "9":
-            if b >= 5:
-                m = RE.match(sn[i:])
-                if m:
-                    return True, i, i + len(m.group()), int(m.group(1)), int(m.group(2))
+        elif "0" <= c <= "9" and b >= 5:
+            m = RE.match(sn[i:])
+            if m:
+                return True, i, i + len(m.group()), int(m.group(1)), int(m.group(2))
 
     return False, -1, -1, -1, -1
 
