@@ -5,7 +5,8 @@ from typing import List
 from typing import Tuple
 
 
-class Map:
+# needs release of https://git.io/Jy4LL
+class Map:  # noqa: SIM119
     def __init__(self, grid: List[List[int]]) -> None:
         self.grid = grid
 
