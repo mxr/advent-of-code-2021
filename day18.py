@@ -8,9 +8,11 @@ from typing import Any
 from typing import Generator
 from typing import Iterable
 from typing import List
-from typing import Match as MatchType
 from typing import Optional
 from typing import Tuple
+from typing import TypeVar
+
+T = TypeVar("T")
 
 RE = re.compile(r"(\d+),(\d+)\]")
 RE_D = re.compile(r"\d+")
@@ -90,7 +92,7 @@ def can_explode(sn: str) -> Tuple[bool, int, int, int, int]:
     return False, -1, -1, -1, -1
 
 
-def last(ms: Iterable[MatchType[str]]) -> Optional[MatchType[str]]:
+def last(ms: Iterable[T]) -> Optional[T]:
     lm = None
     for m in ms:
         lm = m
