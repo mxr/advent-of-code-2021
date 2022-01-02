@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import functools
 from argparse import ArgumentParser
 from typing import Iterable
 from typing import NamedTuple
@@ -11,26 +12,25 @@ def parse(filename: str) -> str:
 
 
 def part1(filename: str) -> int:
-    data = parse(filename)
-    packet = format(int(data, 16), "b").zfill(len(data * 4))
-
-    p, _ = parse_packet(packet)
-
-    return p.version
+    return execute(filename).version
 
 
 def part2(filename: str) -> int:
-    data = parse(filename)
-    packet = format(int(data, 16), "b").zfill(len(data * 4))
-
-    p, _ = parse_packet(packet)
-
-    return p.value
+    return execute(filename).value
 
 
 class Packet(NamedTuple):
     version: int
     value: int
+
+
+@functools.lru_cache(maxsize=1)
+def execute(filename: str) -> Packet:
+    data = parse(filename)
+    packet = format(int(data, 16), "b").zfill(len(data * 4))
+
+    p, _ = parse_packet(packet)
+    return p
 
 
 def parse_packet(packet: str) -> Tuple[Packet, int]:
