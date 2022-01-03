@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from argparse import ArgumentParser
 from collections import defaultdict
-from typing import Dict
+from typing import DefaultDict
 from typing import List
 from typing import Tuple
 
@@ -12,17 +12,21 @@ class Image:
 
         self.width, self.height, self.border = len(inp[0]), len(inp), 50
 
-        self.grid = self._new_grid(0)
+        self.grid = self._new_grid()
         self.grid.update(
             {(i, j): c for i, row in enumerate(inp) for j, c in enumerate(row)}
         )
 
-    def _new_grid(self, n: int) -> Dict[Tuple[int, int], str]:
-        return defaultdict(lambda: self.enh[0 if n % 2 else 511])
+    def _new_grid(self) -> DefaultDict[Tuple[int, int], str]:
+        return defaultdict(lambda: ".")
 
     def apply(self, n: int) -> None:
         for k in range(n):
-            ng = self._new_grid(k + 1)
+            ng = self._new_grid()
+
+            # hack since real input flip-flops, doesn't work for the sample though
+            self.grid.default_factory = lambda: self.enh[0 if k % 2 else 511]
+
             for i in range(-self.border, self.height + self.border):
                 for j in range(-self.border, self.width + self.border):
                     pos = int(
