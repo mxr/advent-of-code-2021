@@ -1,16 +1,14 @@
-#!/usr/bin/env python3
-from argparse import ArgumentParser
+from __future__ import annotations
+
 from typing import Generator
-from typing import List
-from typing import Tuple
 
 
 class Map:
-    def __init__(self, grid: List[List[int]]) -> None:
+    def __init__(self, grid: list[list[int]]) -> None:
         self.grid = grid
 
         # memoize neighbors
-        def neighbors(i: int, j: int) -> Generator[Tuple[int, int, int], None, None]:
+        def neighbors(i: int, j: int) -> Generator[tuple[int, int, int], None, None]:
             for i_delta, j_delta in (-1, 0), (+1, 0), (0, -1), (0, +1):
                 ni, nj = i + i_delta, j + j_delta
 
@@ -35,7 +33,7 @@ def part1(filename: str) -> int:
     return sum(p + 1 for p, _, _ in low_points(m))
 
 
-def low_points(m: Map) -> Generator[Tuple[int, int, int], None, None]:
+def low_points(m: Map) -> Generator[tuple[int, int, int], None, None]:
     return (
         (p, i, j)
         for i, row in enumerate(m.grid)
@@ -76,23 +74,7 @@ def part2(filename: str) -> int:
     return prod
 
 
-def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=0)
-    parser.add_argument("-f", "--filename", type=str, required=True)
-
-    args = parser.parse_args()
-
-    part: int = args.part
-    filename: str = args.filename
-
-    if (part or 1) == 1:
-        print(f"part1: {part1(filename)}")
-    if (part or 2) == 2:
-        print(f"part2: {part2(filename)}")
-
-    return 0
-
-
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from _common import main
+
+    raise SystemExit(main(part1, part2))

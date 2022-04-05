@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
-from argparse import ArgumentParser
+from __future__ import annotations
+
 from collections import Counter
 from typing import Generator
-from typing import List
 
 
 def parse(filename: str) -> Generator[str, None, None]:
@@ -39,22 +38,22 @@ FIND_MOST = "MOST"
 FIND_LEAST = "LEAST"
 
 
-def find_most_common(words: List[str]) -> str:
+def find_most_common(words: list[str]) -> str:
     return _find(words, FIND_MOST)
 
 
-def find_least_common(words: List[str]) -> str:
+def find_least_common(words: list[str]) -> str:
     return _find(words, FIND_LEAST)
 
 
-def _find(words: List[str], which: str) -> str:
+def _find(words: list[str], which: str) -> str:
     assert words
 
     def helper(
-        words: List[str],
+        words: list[str],
         which: str,
         pos: int,
-    ) -> List[str]:
+    ) -> list[str]:
         if len(words) == 1:
             return words
 
@@ -63,7 +62,7 @@ def _find(words: List[str], which: str) -> str:
 
         return helper(new_words, which, pos + 1)
 
-    def target(words: List[str], which: str, pos: int) -> str:
+    def target(words: list[str], which: str, pos: int) -> str:
         counts = Counter(word[pos] for word in words)
         (most, most_val), (least, least_val) = counts.most_common()
 
@@ -75,23 +74,7 @@ def _find(words: List[str], which: str) -> str:
     return helper(words, which, 0)[0]
 
 
-def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=0)
-    parser.add_argument("-f", "--filename", type=str, required=True)
-
-    args = parser.parse_args()
-
-    part: int = args.part
-    filename: str = args.filename
-
-    if (part or 1) == 1:
-        print(f"part1: {part1(filename)}")
-    if (part or 2) == 2:
-        print(f"part2: {part2(filename)}")
-
-    return 0
-
-
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from _common import main
+
+    raise SystemExit(main(part1, part2))

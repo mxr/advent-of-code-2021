@@ -1,15 +1,12 @@
-#!/usr/bin/env python3
+from __future__ import annotations
+
 import ast
 import math
 import re
-from argparse import ArgumentParser
 from itertools import permutations
 from typing import Any
 from typing import Generator
 from typing import Iterable
-from typing import List
-from typing import Optional
-from typing import Tuple
 from typing import TypeVar
 
 T = TypeVar("T")
@@ -77,7 +74,7 @@ def sreduce(sn: str) -> str:
     return sn
 
 
-def can_explode(sn: str) -> Tuple[bool, int, int, int, int]:
+def can_explode(sn: str) -> tuple[bool, int, int, int, int]:
     b = 0
     for i, c in enumerate(sn):
         if c == "[":
@@ -92,7 +89,7 @@ def can_explode(sn: str) -> Tuple[bool, int, int, int, int]:
     return False, -1, -1, -1, -1
 
 
-def last(ms: Iterable[T]) -> Optional[T]:
+def last(ms: Iterable[T]) -> T | None:
     lm = None
     for m in ms:
         lm = m
@@ -101,7 +98,7 @@ def last(ms: Iterable[T]) -> Optional[T]:
 
 
 def mag(sn: str) -> int:
-    def mag_pair(snl: List[Any]) -> int:
+    def mag_pair(snl: list[Any]) -> int:
         left, right = snl
 
         ml = 3 * (left if isinstance(left, int) else mag_pair(left))
@@ -112,23 +109,7 @@ def mag(sn: str) -> int:
     return mag_pair(ast.literal_eval(sn))
 
 
-def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=0)
-    parser.add_argument("-f", "--filename", type=str, required=True)
-
-    args = parser.parse_args()
-
-    part: int = args.part
-    filename: str = args.filename
-
-    if (part or 1) == 1:
-        print(f"part1: {part1(filename)}")
-    if (part or 2) == 2:
-        print(f"part2: {part2(filename)}")
-
-    return 0
-
-
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from _common import main
+
+    raise SystemExit(main(part1, part2))

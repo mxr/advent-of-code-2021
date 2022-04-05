@@ -1,8 +1,6 @@
-#!/usr/bin/env python3
-from argparse import ArgumentParser
-from typing import List
+from __future__ import annotations
+
 from typing import NamedTuple
-from typing import Tuple
 
 
 class Fold(NamedTuple):
@@ -11,7 +9,7 @@ class Fold(NamedTuple):
 
 
 class Paper:
-    def __init__(self, marks: List[List[bool]]) -> None:
+    def __init__(self, marks: list[list[bool]]) -> None:
         self.marks = marks
         self.height, self.width = len(marks), len(marks[0])
 
@@ -46,7 +44,7 @@ class Paper:
         return "\n".join("".join("#" if m else "." for m in row) for row in self.marks)
 
 
-def parse(filename: str) -> Tuple[Paper, List[Fold]]:
+def parse(filename: str) -> tuple[Paper, list[Fold]]:
     with open(filename) as f:
         coords, raw_folds = f.read().split("\n\n")
 
@@ -89,23 +87,7 @@ def part2(filename: str) -> int:
     return -1
 
 
-def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=0)
-    parser.add_argument("-f", "--filename", type=str, required=True)
-
-    args = parser.parse_args()
-
-    part: int = args.part
-    filename: str = args.filename
-
-    if (part or 1) == 1:
-        print(f"part1: {part1(filename)}")
-    if (part or 2) == 2:
-        print(f"part2: {part2(filename)}")
-
-    return 0
-
-
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from _common import main
+
+    raise SystemExit(main(part1, part2))

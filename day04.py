@@ -1,18 +1,15 @@
-#!/usr/bin/env python3
-from argparse import ArgumentParser
+from __future__ import annotations
+
 from dataclasses import dataclass
 from itertools import zip_longest
-from typing import Dict
 from typing import Iterable
-from typing import List
 from typing import NamedTuple
-from typing import Tuple
 from typing import TypeVar
 
 T = TypeVar("T")
 
 
-def grouper(iterable: Iterable[T], n: int) -> Iterable[Tuple[T, ...]]:
+def grouper(iterable: Iterable[T], n: int) -> Iterable[tuple[T, ...]]:
     args = [iter(iterable)] * n
     return zip_longest(*args)
 
@@ -33,8 +30,8 @@ class CellWithLoc(NamedTuple):
 
 
 class Board:
-    def __init__(self, grid: List[List[Cell]]) -> None:
-        self._cell_index: Dict[int, CellWithLoc] = {}
+    def __init__(self, grid: list[list[Cell]]) -> None:
+        self._cell_index: dict[int, CellWithLoc] = {}
         for i, row in enumerate(grid):
             for j, cell in enumerate(row):
                 self._cell_index[cell.value] = CellWithLoc(i, j, cell)
@@ -74,7 +71,7 @@ class Board:
         return self._won
 
 
-def parse(filename: str) -> Tuple[List[int], List[Board]]:
+def parse(filename: str) -> tuple[list[int], list[Board]]:
     with open(filename) as f:
         drawing = [int(n) for n in next(f).split(",")]
 
@@ -112,23 +109,7 @@ def part2(filename: str) -> int:
     return -1
 
 
-def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=0)
-    parser.add_argument("-f", "--filename", type=str, required=True)
-
-    args = parser.parse_args()
-
-    part: int = args.part
-    filename: str = args.filename
-
-    if (part or 1) == 1:
-        print(f"part1: {part1(filename)}")
-    if (part or 2) == 2:
-        print(f"part2: {part2(filename)}")
-
-    return 0
-
-
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from _common import main
+
+    raise SystemExit(main(part1, part2))

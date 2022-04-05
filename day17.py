@@ -1,14 +1,14 @@
-#!/usr/bin/env python3
+from __future__ import annotations
+
 import functools
 import re
-from argparse import ArgumentParser
 from itertools import product
-from typing import Tuple
+
 
 RE = re.compile(r"-?\d+")
 
 
-def parse(filename: str) -> Tuple[Tuple[int, int], Tuple[int, int]]:
+def parse(filename: str) -> tuple[tuple[int, int], tuple[int, int]]:
     with open(filename) as f:
         line = f.read()
 
@@ -32,7 +32,7 @@ def part2(filename: str) -> int:
 
 
 @functools.lru_cache(maxsize=1)
-def execute(filename: str) -> Tuple[int, int]:
+def execute(filename: str) -> tuple[int, int]:
     (x1, x2), (y1, y2) = parse(filename)
 
     hits = set()
@@ -48,7 +48,7 @@ def execute(filename: str) -> Tuple[int, int]:
 
         def y(t: int) -> int:
             @functools.lru_cache(maxsize=None)
-            def ypv(t: int) -> Tuple[int, int]:
+            def ypv(t: int) -> tuple[int, int]:
                 if t == 0:
                     return 0, yv
                 py, pv = ypv(t - 1)
@@ -69,23 +69,7 @@ def execute(filename: str) -> Tuple[int, int]:
     return ypm, len(hits)
 
 
-def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=0)
-    parser.add_argument("-f", "--filename", type=str, required=True)
-
-    args = parser.parse_args()
-
-    part: int = args.part
-    filename: str = args.filename
-
-    if (part or 1) == 1:
-        print(f"part1: {part1(filename)}")
-    if (part or 2) == 2:
-        print(f"part2: {part2(filename)}")
-
-    return 0
-
-
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from _common import main
+
+    raise SystemExit(main(part1, part2))
