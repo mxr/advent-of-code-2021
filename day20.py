@@ -1,13 +1,11 @@
-#!/usr/bin/env python3
-from argparse import ArgumentParser
+from __future__ import annotations
+
 from collections import defaultdict
 from typing import DefaultDict
-from typing import List
-from typing import Tuple
 
 
 class Image:
-    def __init__(self, enh: str, inp: List[List[str]]):
+    def __init__(self, enh: str, inp: list[list[str]]):
         self.enh = enh
 
         self.width, self.height, self.border = len(inp[0]), len(inp), 50
@@ -17,7 +15,7 @@ class Image:
             {(i, j): c for i, row in enumerate(inp) for j, c in enumerate(row)}
         )
 
-    def _new_grid(self) -> DefaultDict[Tuple[int, int], str]:
+    def _new_grid(self) -> DefaultDict[tuple[int, int], str]:
         return defaultdict(lambda: ".")
 
     def apply(self, n: int) -> None:
@@ -67,23 +65,7 @@ def execute(filename: str, n: int) -> int:
     return i.count()
 
 
-def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=0)
-    parser.add_argument("-f", "--filename", type=str, required=True)
-
-    args = parser.parse_args()
-
-    part: int = args.part
-    filename: str = args.filename
-
-    if (part or 1) == 1:
-        print(f"part1: {part1(filename)}")
-    if (part or 2) == 2:
-        print(f"part2: {part2(filename)}")
-
-    return 0
-
-
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from _common import main
+
+    raise SystemExit(main(part1, part2))

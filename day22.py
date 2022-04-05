@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
+from __future__ import annotations
+
 import re
-from argparse import ArgumentParser
 from copy import copy
 from typing import Generator
 from typing import NamedTuple
-from typing import Set
+
 
 RE = re.compile(r"\w=(-?\d+)\.\.(-?\d+)")
 
@@ -28,7 +28,7 @@ class Cube(NamedTuple):
     def bound(self) -> int:
         return max(self.xr.bound(), self.yr.bound(), self.zr.bound())
 
-    def overlaps(self, o: "Cube") -> bool:
+    def overlaps(self, o: Cube) -> bool:
         return (
             self.xr.start <= o.xr.end
             and self.xr.end >= o.xr.start
@@ -38,14 +38,14 @@ class Cube(NamedTuple):
             and self.zr.end >= o.zr.start
         )
 
-    def envelopes(self, o: "Cube") -> bool:
+    def envelopes(self, o: Cube) -> bool:
         return (
             self.xr.start <= o.xr.start <= o.xr.end <= self.xr.end
             and self.yr.start <= o.yr.start <= o.yr.end <= self.yr.end
             and self.zr.start <= o.zr.start <= o.zr.end <= self.zr.end
         )
 
-    def without(self, o: "Cube") -> Generator["Cube", None, None]:
+    def without(self, o: Cube) -> Generator[Cube, None, None]:
         """returns the cubes created by removing the other cube"""
 
         s = copy(self)
@@ -131,7 +131,7 @@ def part1(filename: str) -> int:
 
 def part2(filename: str) -> int:
     commands = list(reversed(tuple(parse(filename))))
-    distinct: Set[Cube] = set()
+    distinct: set[Cube] = set()
     while commands:
         pos, cube = commands.pop()
         # TODO: sometimes cube is a dupe, not sure if this is a bug
@@ -152,23 +152,7 @@ def part2(filename: str) -> int:
     return sum(d.volume() for d in distinct)
 
 
-def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=0)
-    parser.add_argument("-f", "--filename", type=str, required=True)
-
-    args = parser.parse_args()
-
-    part: int = args.part
-    filename: str = args.filename
-
-    if (part or 1) == 1:
-        print(f"part1: {part1(filename)}")
-    if (part or 2) == 2:
-        print(f"part2: {part2(filename)}")
-
-    return 0
-
-
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from _common import main
+
+    raise SystemExit(main(part1, part2))

@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
+from __future__ import annotations
+
 import functools
-from argparse import ArgumentParser
 from typing import Iterable
 from typing import NamedTuple
-from typing import Tuple
 
 
 def parse(filename: str) -> str:
@@ -33,7 +32,7 @@ def execute(filename: str) -> Packet:
     return p
 
 
-def parse_packet(packet: str) -> Tuple[Packet, int]:
+def parse_packet(packet: str) -> tuple[Packet, int]:
     version, type_id = int(packet[:3], 2), int(packet[3 : 3 + 3], 2)
 
     if type_id == 4:
@@ -67,7 +66,7 @@ def parse_packet(packet: str) -> Tuple[Packet, int]:
     return Packet(version, val), i
 
 
-def parse_literal(packet: str) -> Tuple[int, int]:
+def parse_literal(packet: str) -> tuple[int, int]:
     ds = []
     i = 0
     while packet[i] != "0":
@@ -104,23 +103,7 @@ def value(type_id: int, values: Iterable[int]) -> int:
         return v1 == v2
 
 
-def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=0)
-    parser.add_argument("-f", "--filename", type=str, required=True)
-
-    args = parser.parse_args()
-
-    part: int = args.part
-    filename: str = args.filename
-
-    if (part or 1) == 1:
-        print(f"part1: {part1(filename)}")
-    if (part or 2) == 2:
-        print(f"part2: {part2(filename)}")
-
-    return 0
-
-
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from _common import main
+
+    raise SystemExit(main(part1, part2))

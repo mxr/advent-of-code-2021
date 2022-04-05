@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
+from __future__ import annotations
+
 import sys
-from argparse import ArgumentParser
 from collections import defaultdict
 from typing import Dict
-from typing import List
 from typing import NewType
 from typing import Tuple
 
@@ -12,7 +11,7 @@ Graph = NewType("Graph", Dict[Tuple[int, int], Dict[Tuple[int, int], int]])
 
 
 class Map:
-    def __init__(self, grid: List[List[int]]) -> None:
+    def __init__(self, grid: list[list[int]]) -> None:
         self.grid = grid
         self.height, self.width = len(self.grid), len(self.grid[0])
 
@@ -77,23 +76,7 @@ def part2(filename: str) -> int:
     return m.risk()
 
 
-def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=0)
-    parser.add_argument("-f", "--filename", type=str, required=True)
-
-    args = parser.parse_args()
-
-    part: int = args.part
-    filename: str = args.filename
-
-    if (part or 1) == 1:
-        print(f"part1: {part1(filename)}")
-    if (part or 2) == 2:
-        print(f"part2: {part2(filename)}")
-
-    return 0
-
-
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from _common import main
+
+    raise SystemExit(main(part1, part2))

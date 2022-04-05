@@ -1,18 +1,15 @@
-#!/usr/bin/env python3
-from argparse import ArgumentParser
+from __future__ import annotations
+
 from collections import defaultdict
 from itertools import chain
-from typing import Dict
 from typing import Generator
 from typing import Iterable
-from typing import List
 from typing import NamedTuple
-from typing import Set
 
 
 class Mapping(NamedTuple):
-    ins: List[Set[str]]
-    outs: List[Set[str]]
+    ins: list[set[str]]
+    outs: list[set[str]]
 
 
 def parse(filename: str) -> Generator[Mapping, None, None]:
@@ -70,7 +67,7 @@ def decode(m: Mapping) -> int:
     return int("".join(segments[tuple(sorted(o))] for o in m.outs))
 
 
-def group_by_len(sets: Iterable[Set[str]]) -> Dict[int, List[Set[str]]]:
+def group_by_len(sets: Iterable[set[str]]) -> dict[int, list[set[str]]]:
     deduped = defaultdict(set)
     for s in sets:
         deduped[len(s)].add(tuple(sorted(s)))
@@ -82,23 +79,7 @@ def group_by_len(sets: Iterable[Set[str]]) -> Dict[int, List[Set[str]]]:
     return retyped
 
 
-def main() -> int:
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--part", type=int, default=0)
-    parser.add_argument("-f", "--filename", type=str, required=True)
-
-    args = parser.parse_args()
-
-    part: int = args.part
-    filename: str = args.filename
-
-    if (part or 1) == 1:
-        print(f"part1: {part1(filename)}")
-    if (part or 2) == 2:
-        print(f"part2: {part2(filename)}")
-
-    return 0
-
-
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from _common import main
+
+    raise SystemExit(main(part1, part2))
