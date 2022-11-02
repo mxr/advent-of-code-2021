@@ -2,12 +2,10 @@ from __future__ import annotations
 
 import sys
 from collections import defaultdict
-from typing import Dict
 from typing import NewType
-from typing import Tuple
 
 
-Graph = NewType("Graph", Dict[Tuple[int, int], Dict[Tuple[int, int], int]])
+Graph = NewType("Graph", dict[tuple[int, int], dict[tuple[int, int], int]])
 
 
 class Map:

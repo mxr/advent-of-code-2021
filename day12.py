@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from collections import Counter
+from collections import Counter as CounterType
 from collections import defaultdict
-from typing import Counter as CounterType
 
 
 def parse(filename: str) -> dict[str, set[str]]:

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import functools
-from typing import Iterable
+from collections.abc import Iterable
 from typing import NamedTuple
 
 

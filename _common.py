@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import sys
 from argparse import ArgumentParser
-from typing import Callable
+from collections.abc import Callable
 
 
 def main(part1: Callable[[str], int], part2: Callable[[str], int]) -> int:

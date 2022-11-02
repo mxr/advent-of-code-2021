@@ -40,14 +40,14 @@ def execute(filename: str) -> tuple[int, int]:
 
     for xv, yv in product(range(1, x2 + 1), range(y2, abs(y2) + 1)):
 
-        @functools.lru_cache(maxsize=None)
+        @functools.cache
         def x(t: int) -> int:
             if t == 0:
                 return 0
             return x(t - 1) + max(0, xv - t + 1)  # noqa: B023
 
         def y(t: int) -> int:
-            @functools.lru_cache(maxsize=None)
+            @functools.cache
             def ypv(t: int) -> tuple[int, int]:
                 if t == 0:
                     return 0, yv  # noqa: B023

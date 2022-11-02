@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter
-from typing import Counter as CounterType
+from collections import Counter as CounterType
 
 
 def parse(filename: str) -> list[int]:

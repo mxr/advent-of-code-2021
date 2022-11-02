@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from collections.abc import Generator
+from collections.abc import Iterable
 from itertools import chain
-from typing import Generator
-from typing import Iterable
 from typing import NamedTuple
 
 
