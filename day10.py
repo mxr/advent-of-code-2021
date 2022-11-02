@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import statistics
+from collections.abc import Generator
+from collections.abc import Iterable
 from enum import Enum
-from typing import Generator
-from typing import Iterable
 
 
 SCORES = {")": 3, "]": 57, "}": 1197, ">": 25137}

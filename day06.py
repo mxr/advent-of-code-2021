@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections import Counter
-from typing import Counter as CounterType
 
 
 def parse(filename: str) -> list[int]:
@@ -14,7 +13,7 @@ def execute(filename: str, days: int) -> int:
     ages = Counter(fish)
 
     for _ in range(days):
-        new_ages: CounterType[int] = Counter()
+        new_ages: Counter[int] = Counter()
         for age, count in ages.items():
             if age == 0:
                 new_ages[6] += count

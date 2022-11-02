@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Generator
 from copy import copy
-from typing import Generator
 from typing import NamedTuple
 
 

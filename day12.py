@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections import Counter
 from collections import defaultdict
-from typing import Counter as CounterType
 
 
 def parse(filename: str) -> dict[str, set[str]]:
@@ -44,7 +43,7 @@ def part2(filename: str) -> int:
     caves = parse(filename)
 
     # TODO - very slow :)
-    def paths(start: str, seen: CounterType[str]) -> list[list[str]]:
+    def paths(start: str, seen: Counter[str]) -> list[list[str]]:
         if start == "end":
             return [["end"]]
 
