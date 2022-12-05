@@ -3,12 +3,14 @@ repos:
     rev: v4.4.0
     hooks:
     -   id: check-docstring-first
-    -   id: check-yaml
     -   id: debug-statements
     -   id: end-of-file-fixer
-    -   id: name-tests-test
-    -   id: requirements-txt-fixer
     -   id: trailing-whitespace
+-   repo: https://github.com/hakancelikdev/unimport
+    rev: 33ead41ee30f1d323a9c2fcfd0114297efbbc4d5
+    hooks:
+    -   id: unimport
+        args: ["--remove"]  # remove after https://github.com/hakancelikdev/unimport/pull/270
 -   repo: https://github.com/asottile/reorder_python_imports
     rev: v3.9.0
     hooks:
@@ -19,7 +21,7 @@ repos:
     hooks:
     -   id: black
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v3.2.3
+    rev: v3.3.0
     hooks:
     -   id: pyupgrade
         args: [--py311-plus]
