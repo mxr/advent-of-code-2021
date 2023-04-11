@@ -10,7 +10,6 @@ repos:
     rev: 0.16.0
     hooks:
     -   id: unimport
-        args: ["--remove"]  # remove after https://github.com/hakancelikdev/unimport/pull/270
 -   repo: https://github.com/asottile/reorder_python_imports
     rev: v3.9.0
     hooks:
@@ -34,22 +33,22 @@ repos:
     hooks:
     -   id: flake8
         additional_dependencies:
-        -   flake8-bugbear==22.7.1
-        -   flake8-builtins==2.0.1
-        -   flake8-comprehensions==3.10.1
-        -   flake8-simplify==0.19.3
+        -   flake8-bugbear==23.3.23
+        -   flake8-builtins==2.1.0
+        -   flake8-comprehensions==3.11.1
         -   flake8-typing-imports==1.14.0
+        -   flake8_simplify==0.20.0
 -   repo: https://github.com/asottile/yesqa
     rev: v1.4.0
     hooks:
     -   id: yesqa
         additional_dependencies:
         -   flake8==6.0.0
-        -   flake8-bugbear==22.7.1
-        -   flake8-builtins==2.0.1
-        -   flake8-comprehensions==3.10.1
-        -   flake8-simplify==0.19.3
+        -   flake8-bugbear==23.3.23
+        -   flake8-builtins==2.1.0
+        -   flake8-comprehensions==3.11.1
         -   flake8-typing-imports==1.14.0
+        -   flake8_simplify==0.20.0
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.2.0
     hooks:
